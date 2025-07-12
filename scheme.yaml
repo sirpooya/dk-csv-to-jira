@@ -1,0 +1,39 @@
+rename:
+  Component: Summary
+  Pages: Labels
+  Impl Est: Story Points
+  Design: Description
+  Prototype: Description
+  Category: Description
+
+append_to_description:
+  - Design
+  - Prototype
+  - Category
+
+append_multiline: |
+  ----
+  Checklist:
+  🔲 prop configuration & exposition
+  🔲 correct token mapping
+  🔲 prop change = correct appearance & behavior
+  🔲 interactive states (desktop & mobile)
+  🔲 mobile active state
+  🔲 user input (type & keypress & select)
+  🔲 edge-cases (empty state & long text)
+  🔲 ui coherence (textstyle & weight & spacing & color & shadow)
+  🔲 responsive behavior
+  🔲 transition behavior (expand/collapse)
+  🔲 animation follows prototype
+  🔲 os/browser check: Android Chrome
+  🔲 os/browser check: iOS Safari/Chrome
+  🔲 os/browser check: Windows Chrome/Firefox
+  🔲 os/browser check: macOS Safari/Chrome
+  🔲 os/browser check: Native Android app
+  🔲 os/browser check: Native iOS app
+  🔲 zooming (ios & android) and scaling (windows)
+
+add:
+  Issue Type: Story
+  Status: Planning Web
+  Epic Link: DDS-1
