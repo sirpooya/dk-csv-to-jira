@@ -1,6 +1,9 @@
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> b1f75d1e9987970a8b695c6c3d8ef9463eedca75
 # dk-csv-to-jira
 
 A lightweight Python script to transform a Google Sheets-exported CSV file into a Jira-compatible story import format.
