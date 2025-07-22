@@ -19,6 +19,9 @@ def process_csv(input_csv, phase_number, scheme):
         reader = csv.DictReader(infile)
         filtered_rows = [row for row in reader if row.get("Phase", "").strip() == phase_number]
 
+    # Determine Epic Link based on phase number
+    epic_link = "DDS-1" if phase_number == "1" else "DDS-276" if phase_number == "2" else scheme.get("add", {}).get("Epic Link", "DDS-1")
+
     processed = []
     for row in filtered_rows:
         new_row = {}
@@ -30,6 +33,9 @@ def process_csv(input_csv, phase_number, scheme):
         # Add static fields from 'add'
         for col, val in scheme.get("add", {}).items():
             new_row[col] = val
+
+        # Override Epic Link based on phase number
+        new_row["Epic Link"] = epic_link
 
         # Compose Description
         description_parts = []
@@ -68,9 +74,9 @@ def write_output_csv(data, headers, output_path):
         writer.writerows(data)
 
 def main():
-    input_csv = input("Enter path to input CSV file: ").strip()
+    input_csv = os.path.expanduser("~/Downloads/dds.csv")
     if not os.path.isfile(input_csv):
-        print("File not found.")
+        print(f"File not found: {input_csv}")
         sys.exit(1)
 
     phase_number = prompt_phase()
