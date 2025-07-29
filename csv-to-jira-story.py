@@ -3,27 +3,23 @@ import os
 import sys
 import yaml
 
-def prompt_phase():
-    while True:
-        phase_input = input("Enter Phase Number (1-10): ").strip()
-        if phase_input.isdigit() and 1 <= int(phase_input) <= 10:
-            return phase_input
-        print("Invalid input. Please enter a number from 1 to 10.")
+
 
 def load_scheme(path):
     with open(path, 'r') as f:
         return yaml.safe_load(f)
 
-def process_csv(input_csv, phase_number, scheme):
+def process_csv(input_csv, scheme):
     with open(input_csv, newline='') as infile:
         reader = csv.DictReader(infile)
-        filtered_rows = [row for row in reader if row.get("Phase", "").strip() == phase_number]
+        rows = list(reader)
 
-    # Determine Epic Link based on phase number
-    epic_link = "DDS-1" if phase_number == "1" else "DDS-276" if phase_number == "2" else scheme.get("add", {}).get("Epic Link", "DDS-1")
+    # Get phase to epic link mapping from scheme
+    phase_epic_links = scheme.get("phase_epic_links", {})
+    default_epic_link = scheme.get("add", {}).get("Epic Link", "DDS-1")
 
     processed = []
-    for row in filtered_rows:
+    for row in rows:
         new_row = {}
         for old_col, new_col in scheme['rename'].items():
             if new_col == "Description":
@@ -34,7 +30,9 @@ def process_csv(input_csv, phase_number, scheme):
         for col, val in scheme.get("add", {}).items():
             new_row[col] = val
 
-        # Override Epic Link based on phase number
+        # Convert Phase to Epic Link based on scheme mapping
+        phase_number = row.get("Phase", "").strip()
+        epic_link = phase_epic_links.get(phase_number, default_epic_link)
         new_row["Epic Link"] = epic_link
 
         # Compose Description
@@ -79,9 +77,8 @@ def main():
         print(f"File not found: {input_csv}")
         sys.exit(1)
 
-    phase_number = prompt_phase()
     scheme = load_scheme("scheme.yaml")
-    processed_rows, headers = process_csv(input_csv, phase_number, scheme)
+    processed_rows, headers = process_csv(input_csv, scheme)
 
     if not processed_rows:
         print("No matching rows found.")

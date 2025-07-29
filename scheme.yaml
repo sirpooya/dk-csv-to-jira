@@ -5,6 +5,7 @@ rename:
   Design: Description
   Prototype: Description
   Category: Description
+  Phase: Epic Link
 
 append_to_description:
   - Design
@@ -36,4 +37,7 @@ append_multiline: |
 add:
   Issue Type: Story
   Status: Planning Web
-  Epic Link: DDS-1
+
+phase_epic_links:
+  "1": DDS-1
+  "2": DDS-276
